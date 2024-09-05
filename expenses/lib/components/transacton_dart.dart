@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import '../models/transection.dart';
 import 'package:intl/intl.dart';
 
@@ -12,26 +13,29 @@ class TransactionList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return transection.isEmpty ? Column(
-      children: <Widget>[
-        const SizedBox(height: 20,),
-        const Text(
-          'Nenhuma Transação',
-          style: TextStyle(
-            fontFamily: 'Quicksand',
-            fontSize: 20,
-            fontWeight: FontWeight.bold
+    return transection.isEmpty ? LayoutBuilder(builder: (context, constraints){
+      return Column(
+        children: <Widget>[
+          const SizedBox(height: 20),
+          const Text(
+            'Nenhuma Transação',
+            style: TextStyle(
+              fontFamily: 'Quicksand',
+              fontSize: 20,
+              fontWeight: FontWeight.bold
+            ),
           ),
-        ),
-        const SizedBox(height: 20,),
-        Container(
-          height: 200,
-          child: Image.asset('./assets/imgs/waiting.png',
-            fit: BoxFit.cover,
+          const SizedBox(height: 20),
+          Container(
+            height: constraints.maxHeight * 0.6,
+            child: Image.asset('./assets/imgs/waiting.png',
+              fit: BoxFit.cover,
+            ),
           ),
-        ),
-      ],
-    ) : ListView.builder(
+        ],
+      );
+    })
+    : ListView.builder(
       itemCount: transection.length,
       itemBuilder: (ctx, index){
         final tr = transection[index];
@@ -58,7 +62,15 @@ class TransactionList extends StatelessWidget {
             subtitle: Text(
               DateFormat('d MMM y').format(tr.date),
             ),
-            trailing: IconButton(
+            trailing: MediaQuery.of(context).size.width > 480 ?
+            TextButton.icon(
+              onPressed: () => onRemove(tr.id),
+              icon: const Icon(Icons.delete),
+              label: Text('Excluir',
+                style: TextStyle(color: Theme.of(context).colorScheme.error),
+              ),
+            ) :
+            IconButton(
               onPressed: () => onRemove(tr.id), 
               icon: const Icon(Icons.delete),
               color: Theme.of(context).colorScheme.error,
