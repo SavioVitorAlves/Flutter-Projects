@@ -14,6 +14,7 @@ class CategoryScreens extends StatelessWidget {
         titleTextStyle: TextStyle(color: Colors.white, fontSize: 20),
       ),
       body: GridView(
+        padding: EdgeInsets.all(25),
         gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
           maxCrossAxisExtent: 200,
           childAspectRatio: 3/2,
