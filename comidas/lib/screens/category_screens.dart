@@ -6,14 +6,7 @@ class CategoryScreens extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Vamos cozinhar?'),
-        centerTitle: true,
-        backgroundColor: Colors.blue,
-        titleTextStyle: TextStyle(color: Colors.white, fontSize: 20),
-      ),
-      body: GridView(
+    return GridView(
         padding: EdgeInsets.all(25),
         gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
           maxCrossAxisExtent: 200,
@@ -24,7 +17,6 @@ class CategoryScreens extends StatelessWidget {
         children: DUMMY_CATEGORIES.map((cat){
           return CatergoryItem(cat);
         }).toList(),
-      ),
-    );
+      );
   }
 }
