@@ -14,7 +14,7 @@ class MainDrawer extends StatelessWidget {
         label,
         style: const TextStyle(
           fontFamily: 'RobotoCondensed',
-          fontSize: 24,
+          fontSize: 20,
           fontWeight: FontWeight.bold
         ),
       ),
@@ -36,7 +36,7 @@ class MainDrawer extends StatelessWidget {
             child: Text('Vamos Cozinhar?',
               style: TextStyle(
                 fontWeight: FontWeight.w900,
-                fontSize: 30,
+                fontSize: 25,
                 color: Theme.of(context).colorScheme.primary
               ),
             ),

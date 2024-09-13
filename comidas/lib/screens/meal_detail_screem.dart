@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import '../models/meals.dart';
 class MealDetailScreem extends StatelessWidget {
-  const MealDetailScreem({super.key});
+  const MealDetailScreem(this.onToggFavorite, this.isFavorite, {super.key});
   
+  final Function(Meal) onToggFavorite;
+  final bool Function(Meal) isFavorite;
+
+
   Widget _createSectionTitle(BuildContext context, String title){
     return Container(
             margin: EdgeInsets.symmetric(vertical: 10),
@@ -81,9 +85,9 @@ class MealDetailScreem extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.star),
+        child: Icon(isFavorite(meal) ? Icons.star : Icons.star_border),
         onPressed:(){
-          Navigator.of(context).pop(meal);
+          onToggFavorite(meal);
         } ),
     );
   }
