@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img alt="Logo da Aplicação" title="Logo da Aplicação" src="./src/components/img/nativas.png"  width="450"/>
+  <img alt="Logo da Aplicação" title="Logo da Aplicação" src="https://cdn.worldvectorlogo.com/logos/flutter-logo.svg"  width="150"/>
 </h1>
 <h1 align="center">Flutter Projects</h1>
 <p align="center">  Este repositório contém uma coleção de projetos desenvolvidos em Flutter. Cada projeto serve como um exemplo prático para explorar e demonstrar diferentes aspectos do desenvolvimento de aplicativos móveis usando o Flutter, como:
@@ -9,6 +9,8 @@
 - Integração com APIs
 - Animações e transições
 - Práticas recomendadas de design responsivo
+- Conexção em multiplos dispositivos
+- Ingração com Banco de Dados
 
 Sinta-se à vontade para explorar, clonar, contribuir e usar esses exemplos como base para seus próprios projetos!
 
@@ -20,6 +22,8 @@ Sinta-se à vontade para explorar, clonar, contribuir e usar esses exemplos como
 ### Projetos
 - Perguntas
 - Expenses
+- Comida
+- Shop
 
 ### 🛠 Tecnologias
 
