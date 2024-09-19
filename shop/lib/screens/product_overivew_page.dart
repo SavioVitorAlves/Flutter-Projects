@@ -34,7 +34,7 @@ class _ProductOverivewPageState extends State<ProductOverivewPage> {
         centerTitle: true,
         actions: [
           PopupMenuButton(
-            icon: Icon(Icons.more_vert, color: Colors.white,),
+            icon: const Icon(Icons.more_vert, color: Colors.white,),
             itemBuilder: (_) => [
               PopupMenuItem(
                 child: Text('Somente Favoritos'),
@@ -60,7 +60,7 @@ class _ProductOverivewPageState extends State<ProductOverivewPage> {
                 onPressed: (){
                   Navigator.of(context).pushNamed(AppRoutes.CART);
                 }, 
-                icon: Icon(Icons.shopping_cart, color: Colors.white,)
+                icon: const Icon(Icons.shopping_cart, color: Colors.white,)
             ),
             builder: (ctx, cart, child) => Badgee(
               value: cart.itensCount.toString(),
