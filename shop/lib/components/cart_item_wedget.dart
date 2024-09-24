@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shop/models/cart.dart';
 import 'package:shop/models/cart_item.dart';
 
 class CartItemWedget extends StatelessWidget {
@@ -7,24 +9,45 @@ class CartItemWedget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.symmetric(
-        horizontal: 15,
-        vertical: 4
+    return Dismissible(
+      key: ValueKey(cartItem.id),
+      direction: DismissDirection.endToStart,
+      background: Container(
+        color: Theme.of(context).colorScheme.error,
+        child: const Icon(
+            Icons.delete,
+            color: Colors.white,
+            size: 40,
+        ),
+        alignment: Alignment.centerRight,
+        padding: EdgeInsets.only(right: 20),
+        margin: const EdgeInsets.symmetric(
+          horizontal: 15,
+          vertical: 4
+        ),
       ),
-      child: ListTile(
-        leading: CircleAvatar(
-          backgroundColor: Theme.of(context).colorScheme.primary,
-          child: Padding(
-            padding: const EdgeInsets.all(5),
-            child: FittedBox(
-              child: Text('${cartItem.price}'),
+      onDismissed: (_){
+        Provider.of<Cart>(context, listen: false).removeItem(cartItem.productId);
+      },
+      child: Card(
+        margin: const EdgeInsets.symmetric(
+          horizontal: 15,
+          vertical: 4
+        ),
+        child: ListTile(
+          leading: CircleAvatar(
+            backgroundColor: Theme.of(context).colorScheme.primary,
+            child: Padding(
+              padding: const EdgeInsets.all(5),
+              child: FittedBox(
+                child: Text('${cartItem.price}'),
+              ),
             ),
           ),
+          title: Text(cartItem.name),
+          subtitle: Text('Total: R\$ ${cartItem.price * cartItem.quantity}'),
+          trailing: Text('${cartItem.quantity}x'),
         ),
-        title: Text(cartItem.name),
-        subtitle: Text('Total: R\$ ${cartItem.price * cartItem.quantity}'),
-        trailing: Text('${cartItem.quantity}x'),
       ),
     );
   }
