@@ -20,6 +20,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
   final _imageUrlControler = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   final _formData = Map<String, Object>();
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -70,7 +71,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
     setState(() {});
   }
 
-  void _submitForm(){
+  Future<void> _submitForm() async{
     final isValid = _formKey.currentState?.validate() ?? false;
 
     if (!isValid) {
@@ -78,10 +79,36 @@ class _ProductFormPageState extends State<ProductFormPage> {
     }
 
     _formKey.currentState?.save();
+    setState(() {
+      _isLoading = true;
+    });
 
-    Provider.of<ProductList>(context, listen: false).saveProduct(_formData);
+    try {
+      await Provider.of<ProductList>(context, listen: false).saveProduct(_formData);
+      Navigator.of(context).pop();
+    } catch (error) {
+      await showDialog(
+          context: context, 
+          builder: (ctx) => AlertDialog(
+            title: Text('Ocorreu um erro!'),
+            content: Text('Ocorreu um erro para salvar o produto!'),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(ctx).pop(), 
+                child: Text('OK')
+              )
+            ],
+          )
+
+        );
+    }finally{
+       setState(() {
+        _isLoading = false;
+      });
+    }
     
-    Navigator.of(context).pop();
+    
+    
   }
   
   @override
@@ -102,7 +129,11 @@ class _ProductFormPageState extends State<ProductFormPage> {
         ),
         backgroundColor: Theme.of(context).colorScheme.primary,
       ),
-      body: Padding(
+      body: _isLoading 
+      ? Center(
+        child: CircularProgressIndicator(),
+      ) 
+      : Padding(
         padding: const EdgeInsets.all(10),
         child: Form(
           key: _formKey,
@@ -211,10 +242,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
                     ),
                     alignment: Alignment.center,
                     child: _imageUrlControler.text.isEmpty ? Text('Informe a Url') 
-                    : FittedBox(
-                      child: Image.network(_imageUrlControler.text),
-                      fit: BoxFit.cover,
-                    ),
+                    : Image.network(_imageUrlControler.text),
                   )
                 ],
               ),

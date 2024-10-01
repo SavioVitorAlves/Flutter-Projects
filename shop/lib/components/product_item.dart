@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop/models/product_list.dart';
@@ -12,6 +14,7 @@ class ProductItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final msg = ScaffoldMessenger.of(context);
     return ListTile(
       leading: CircleAvatar(
         backgroundImage: NetworkImage(product.imageUrl),
@@ -30,26 +33,36 @@ class ProductItem extends StatelessWidget {
             ),
             IconButton(
               onPressed: (){
-                showDialog(
+                showDialog<bool>(
                   context: context, 
                   builder: (ctx)  => AlertDialog(
                     title: Text('Excluir Produto'),
                     content: Text('Tem Certeza?'),
                     actions: [
                       TextButton(
-                        onPressed: () => Navigator.of(context).pop(), 
+                        onPressed: () => Navigator.of(context).pop(false), 
                         child: Text('Não')
                       ),
                       TextButton(
-                        onPressed: () {
-                          Provider.of<ProductList>(context, listen: false).removeProduct(product);
-                          Navigator.of(context).pop();
+                        onPressed: () {                          
+                          Navigator.of(context).pop(true);
                         }, 
                         child: Text('Sim')
                       )
                     ],
                   )
-                );
+                ).then((value) async{
+                  if (value ?? false) {
+                    try {
+                      await Provider.of<ProductList>(context, listen: false).removeProduct(product);  
+                    } on HttpException catch (error) {
+                      msg.showSnackBar(
+                        SnackBar(content: Text(error.toString()))
+                      );
+                    }
+                    
+                  }
+                });
               }, 
               icon: const Icon(Icons.delete),
               color: Theme.of(context).colorScheme.error
