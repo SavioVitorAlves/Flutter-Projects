@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shop/exceptions/auth_exceptions.dart';
 import 'package:shop/models/auth.dart';
 
 enum AuthMode {Signup, Login}
@@ -34,6 +35,22 @@ class _AuthFormState extends State<AuthForm> {
   bool _isSignup() => _authMode == AuthMode.Signup;
   bool _isLoading = false;
   
+  void _showErrorModal(String msg){
+    showDialog(
+      context: context, 
+      builder: (ctx) => AlertDialog(
+        title: Text('Ocorreu um error!'),
+        content: Text(msg),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(), 
+            child: Text('Fechar')
+          )
+        ],
+      )
+    );
+  }
+  
   Future<void> _submit() async{
     final isValid = _formKey.currentState?.validate() ?? false;
 
@@ -48,10 +65,16 @@ class _AuthFormState extends State<AuthForm> {
     _formKey.currentState?.save();
 
     Auth auth = Provider.of(context, listen: false);
-    if (_isLogin()) {
-      await auth.login(_authData['email']!, _authData['password']!,);
-    }else{
-      await auth.signup(_authData['email']!, _authData['password']!,);
+    try {
+      if (_isLogin()) {
+        await auth.login(_authData['email']!, _authData['password']!,);
+      }else{
+        await auth.signup(_authData['email']!, _authData['password']!,);
+      }
+    } on AuthExceptions catch (e) {
+      _showErrorModal(e.toString());
+    }catch(e){
+      _showErrorModal('Ocorreu um error inesperado!');
     }
 
     setState(() {
@@ -136,7 +159,7 @@ class _AuthFormState extends State<AuthForm> {
                 ),
 
               ),
-            Spacer(),
+            const Spacer(),
             TextButton(
               onPressed: _switchAuthMode, 
               child: Text(

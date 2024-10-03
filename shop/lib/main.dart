@@ -4,6 +4,7 @@ import 'package:shop/models/auth.dart';
 import 'package:shop/models/cart.dart';
 import 'package:shop/models/oder_list.dart';
 import 'package:shop/models/product_list.dart';
+import 'package:shop/screens/auth_or_home_page.dart';
 import 'package:shop/screens/auth_page.dart';
 import 'package:shop/screens/cart_page.dart';
 import 'package:shop/screens/orders_page.dart';
@@ -26,17 +27,27 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
+          create: (_) => Auth(),
+        ),
+        ChangeNotifierProxyProvider<Auth, ProductList>(
           create: (_) => ProductList(),
+          update: (ctx, auth, previous){
+            return ProductList(auth.token ?? '', auth.userId ?? '', previous?.itens ?? []);
+          },
+        ),
+        ChangeNotifierProxyProvider<Auth, OrderList>(
+          create: (_) => OrderList(),
+          update: (context, auth, previous){
+            return OrderList(
+              auth.token ?? '', previous?.itens ?? []
+            );
+          },
         ),
         ChangeNotifierProvider(
           create: (_) => Cart(),
         ),
-        ChangeNotifierProvider(
-          create: (_) => OrderList(),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => Auth(),
-        )
+        
+        
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
@@ -52,8 +63,7 @@ class MyApp extends StatelessWidget {
         routes: {
           AppRoutes.PRODUCT_DETAIL: (ctx) => ProductDetailPage(),
           AppRoutes.CART: (ctx) => CartPage(),
-          AppRoutes.HOME: (ctx) => ProductOverivewPage(),
-          AppRoutes.AUTH: (ctx) => AuthPage(),
+          AppRoutes.AUTH_OR_HOME: (ctx) => AuthOrHomePage(),
           AppRoutes.ORDERS: (ctx) => OrdersPage(),
           AppRoutes.PRODUCTS: (ctx) => ProductPage(),
           AppRoutes.PRODUCTS_FORM: (ctx) => ProductFormPage(),
