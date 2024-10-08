@@ -13,6 +13,7 @@ import 'package:shop/screens/product_form_page.dart';
 import 'package:shop/screens/product_overivew_page.dart';
 import 'package:shop/screens/product_page.dart';
 import 'package:shop/utils/app_routes.dart';
+import 'package:shop/utils/custom_route.dart';
 
 void main() {
   runApp(const MyApp());
@@ -39,7 +40,7 @@ class MyApp extends StatelessWidget {
           create: (_) => OrderList(),
           update: (context, auth, previous){
             return OrderList(
-              auth.token ?? '', previous?.itens ?? []
+              auth.token ?? '', auth.userId ?? '', previous?.itens ?? []
             );
           },
         ),
@@ -56,8 +57,14 @@ class MyApp extends StatelessWidget {
             seedColor: Colors.purple, 
             secondary: Colors.deepOrange
           ),
-          fontFamily: 'Lado',
+          fontFamily: 'Lato',
           useMaterial3: true,
+          pageTransitionsTheme: PageTransitionsTheme(
+            builders: { 
+              TargetPlatform.iOS: CustomPageTransitionsBuilder(),
+              TargetPlatform.android: CustomPageTransitionsBuilder(),
+            }
+          )
         ),
         //home: ProductOverivewPage(),
         routes: {

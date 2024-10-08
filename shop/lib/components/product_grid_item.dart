@@ -53,10 +53,18 @@ class ProductGridItem extends StatelessWidget {
             ),
         ),
         child: GestureDetector(
-          child: Image.network(
+          child: Hero(
+            tag: product.id,
+            child: FadeInImage(
+              placeholder: AssetImage('assets/images/product-placeholder.png'), 
+              image: NetworkImage(product.imageUrl),
+              fit: BoxFit.cover,
+            ),
+          ),
+          /*child: Image.network(
             product.imageUrl,
             fit: BoxFit.cover,
-          ),
+          ),*/
           onTap: (){
             Navigator.of(context).pushNamed(
              AppRoutes.PRODUCT_DETAIL,
