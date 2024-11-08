@@ -31,12 +31,14 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   String? selectedItem;
   String? selectedItem2;
-  double inputValue = 0.0;
+  
   double result = 0.0;
   Map? currencies;
+  final  _valorController = TextEditingController();
+  
 
-  double conversao(double moeda, double valor){
-    double valorConvertido = valor * moeda;
+  double conversao(double moeda){
+    double valorConvertido = double.parse(_valorController.text) * moeda;
     return valorConvertido;
   }
 
@@ -145,6 +147,7 @@ class _HomeState extends State<Home> {
                             Expanded(
                               child: TextField(
                                 style: TextStyle(color: Colors.amber),
+                                controller: _valorController,
                                 decoration: InputDecoration(
                                   labelText: "Valor",
                                   labelStyle: TextStyle(color: Colors.amber),
@@ -163,7 +166,7 @@ class _HomeState extends State<Home> {
                               ),
                               onPressed: () {
                                 setState(() {
-                                  result = conversao(currencies![selectedItem2!]["buy"], inputValue);
+                                  result = conversao(currencies![selectedItem2!]["buy"]);
                                 });
                               }, 
                               child: Icon(Icons.money, color: Colors.white, size: 45,)
@@ -174,7 +177,7 @@ class _HomeState extends State<Home> {
                         if (selectedItem != null && selectedItem2 != null)
                           
                           Text(
-                            "$inputValue $selectedItem = $result $selectedItem2",
+                            "${double.parse(_valorController.text)} $selectedItem = $result $selectedItem2",
                             style: TextStyle(color: Colors.amber, fontSize: 20),
                           ),
                       ],
